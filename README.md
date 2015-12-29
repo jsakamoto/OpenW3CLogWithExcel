@@ -15,6 +15,13 @@ If the `.log` file is not W3C extended format, this app detect it and open it wi
 
 もし `.log` ファイルが W3C 拡張形式でなければ、このアプリケーションはそのことを察知し、シェルの "開く" 動詞でそのファイルを開きます。
 
+## Download / ダウンロード
+
+Please download this application from ["Release" page](https://github.com/jsakamoto/OpenW3CLogWithExcel/releases).
+
+このアプリケーションのダウンロードは ["Release" ページ](https://github.com/jsakamoto/OpenW3CLogWithExcel/releases) からどうぞ。
+
+
 ## Example of registry configuration / レジストリ設定例
 
 ```
