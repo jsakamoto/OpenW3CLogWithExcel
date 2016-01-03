@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenW3CLogWithExcel", "OpenW3CLogWithExcel\OpenW3CLogWithExcel.csproj", "{2328946B-A468-40EF-8298-A5CA07DC2BC3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87F483B2-C97D-4166-A667-81C18FD0C14E} = {87F483B2-C97D-4166-A667-81C18FD0C14E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenW3CLogWithExcel.Installer", "OpenW3CLogWithExcel.Installer\OpenW3CLogWithExcel.Installer.csproj", "{87F483B2-C97D-4166-A667-81C18FD0C14E}"
 EndProject

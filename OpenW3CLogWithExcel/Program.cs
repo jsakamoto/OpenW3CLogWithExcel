@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Deployment.Application;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using ClosedXML.Excel;
@@ -19,7 +20,15 @@ namespace OpenW3CLogWithExcel
 
             // Validate command line arguments.
 
-            if (commandLineArgs.Any() == false) return;
+            if (commandLineArgs.Any() == false)
+            {
+                if (ApplicationDeployment.IsNetworkDeployed)
+                {
+                    var installerPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OpenW3CLogWithExcel.Installer.exe");
+                    Process.Start(installerPath);
+                }
+                return;
+            }
 
             var path = commandLineArgs.First();
             if (File.Exists(path) == false) return;

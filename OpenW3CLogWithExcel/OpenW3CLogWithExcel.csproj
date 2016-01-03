@@ -99,6 +99,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Content Include="..\OpenW3CLogWithExcel.Installer\bin\Release\OpenW3CLogWithExcel.Installer.exe.config">
+      <Link>OpenW3CLogWithExcel.Installer.exe.config</Link>
+    </Content>
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
@@ -122,6 +125,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\OpenW3CLogWithExcel.Installer\bin\Release\OpenW3CLogWithExcel.Installer.exe">
+      <Link>OpenW3CLogWithExcel.Installer.exe</Link>
+    </Content>
     <Content Include="Generic_Document.ico" />
   </ItemGroup>
   <ItemGroup>
