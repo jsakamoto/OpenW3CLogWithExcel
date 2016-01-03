@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using ClosedXML.Excel;
+using Microsoft.Win32;
 
 namespace OpenW3CLogWithExcel
 {
@@ -24,8 +25,10 @@ namespace OpenW3CLogWithExcel
             {
                 if (ApplicationDeployment.IsNetworkDeployed)
                 {
+                    var installed = Registry.ClassesRoot.OpenSubKey(@"txtfile\shell\openw3clogwithexcel") != null;
+                    if (installed) return;
                     var installerPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OpenW3CLogWithExcel.Installer.exe");
-                    Process.Start(installerPath);
+                    Process.Start(installerPath, "install");
                 }
                 return;
             }
