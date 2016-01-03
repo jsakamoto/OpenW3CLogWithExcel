@@ -89,11 +89,16 @@ namespace OpenW3CLogWithExcel
             }
 
             // Open with "Open" verb for .xlsx file.
+            File.SetAttributes(xlsxPath, FileAttributes.ReadOnly);
             var xlapp = Shell.Open(xlsxPath);
             xlapp.WaitForExit();
 
             // Sweep .xlsx as temporary file.
-            try { File.Delete(xlsxPath); }
+            try
+            {
+                File.SetAttributes(xlsxPath, FileAttributes.Normal);
+                File.Delete(xlsxPath);
+            }
             catch (Exception) { }
         }
 
