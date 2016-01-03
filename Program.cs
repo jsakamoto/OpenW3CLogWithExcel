@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Deployment.Application;
 using System.IO;
 using System.Linq;
 using ClosedXML.Excel;
@@ -14,11 +15,13 @@ namespace OpenW3CLogWithExcel
         [STAThread]
         static void Main(string[] args)
         {
+            var commandLineArgs = ApplicationDeployment.IsNetworkDeployed ? AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData ?? new string[0] : args;
+
             // Validate command line arguments.
 
-            if (args.Any() == false) return;
+            if (commandLineArgs.Any() == false) return;
 
-            var path = args.First();
+            var path = commandLineArgs.First();
             if (File.Exists(path) == false) return;
 
             // Start reading file...
