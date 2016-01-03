@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenW3CLogWithExcel", "OpenW3CLogWithExcel.csproj", "{2328946B-A468-40EF-8298-A5CA07DC2BC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenW3CLogWithExcel", "OpenW3CLogWithExcel\OpenW3CLogWithExcel.csproj", "{2328946B-A468-40EF-8298-A5CA07DC2BC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
