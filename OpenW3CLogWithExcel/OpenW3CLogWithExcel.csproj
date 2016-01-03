@@ -66,6 +66,9 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>appicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClosedXML, Version=0.76.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.0.76.0\lib\net35-client\ClosedXML.dll</HintPath>
@@ -127,6 +130,7 @@
     <Content Include="..\OpenW3CLogWithExcel.Installer\bin\Release\OpenW3CLogWithExcel.Installer.exe">
       <Link>OpenW3CLogWithExcel.Installer.exe</Link>
     </Content>
+    <Content Include="appicon.ico" />
     <Content Include="Generic_Document.ico" />
   </ItemGroup>
   <ItemGroup>
