@@ -8,6 +8,10 @@ namespace OpenW3CLogWithExcel
 {
     public class W3CLogOpener
     {
+        public event EventHandler Exit;
+
+        public event EventHandler Converted;
+
         public void Open(string path)
         {
             // Start reading file...
@@ -22,6 +26,7 @@ namespace OpenW3CLogWithExcel
             if (marker?.StartsWith("#Fields:") == false)
             {
                 Shell.Open(path);
+                Exit?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
@@ -79,6 +84,7 @@ namespace OpenW3CLogWithExcel
 
             // Open with "Open" verb for .xlsx file.
             File.SetAttributes(xlsxPath, FileAttributes.ReadOnly);
+            Converted?.Invoke(this, EventArgs.Empty);
             var xlapp = Shell.Open(xlsxPath);
             xlapp.WaitForExit();
 
@@ -89,6 +95,8 @@ namespace OpenW3CLogWithExcel
                 File.Delete(xlsxPath);
             }
             catch (Exception) { }
+
+            Exit?.Invoke(this, EventArgs.Empty);
         }
 
         private static IEnumerable<string> ReadLines(string path)

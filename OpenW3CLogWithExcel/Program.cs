@@ -17,6 +17,9 @@ namespace OpenW3CLogWithExcel
         [STAThread]
         static void Main(string[] args)
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             var commandLineArgs = ApplicationDeployment.IsNetworkDeployed ? AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData ?? new string[0] : args;
 
             // Validate command line arguments.
@@ -36,7 +39,7 @@ namespace OpenW3CLogWithExcel
             var path = commandLineArgs.First();
             if (File.Exists(path) == false) return;
 
-            new W3CLogOpener().Open(path);
+            Application.Run(new MainForm(path));
         }
     }
 }
