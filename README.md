@@ -6,6 +6,8 @@ This application is a converter from W3C extended format text log file to Micros
 
 このアプリケーションは、W3C 拡張形式のテキストログファイルを、Microsoft Excel 2007 形式(.xlsx) のファイルに変換します。
 
+![animation](.resources/animation.gif)
+
 After associate this app with `.log` extension, if you double click `.log` file which is W3C extended format log file on Windows Explorer, then this app convert the log file to
 .xlsx file as temporary and open it with Microsoft Excel. (When exit Microsoft Excel, the temporary .xlsx file will deleted by this app soon.)
 
