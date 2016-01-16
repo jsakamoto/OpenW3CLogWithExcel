@@ -6,9 +6,9 @@ using System.Text;
 
 namespace OpenW3CLogWithExcel
 {
-    internal static class Shell
+    internal class Shell : IShell
     {
-        public static Process Open(string path)
+        public Process Open(string path)
         {
             var pi = new ProcessStartInfo
             {

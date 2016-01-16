@@ -16,6 +16,18 @@ namespace OpenW3CLogWithExcel
 
         public event EventHandler<ProgressEventArgs> Progress;
 
+        private IShell Shell;
+
+        public W3CLogOpener()
+        {
+            this.Shell = new Shell();
+        }
+
+        public W3CLogOpener(IShell shell)
+        {
+            this.Shell = shell;
+        }
+
         public void Open(string path)
         {
             // Start reading file...
@@ -27,7 +39,7 @@ namespace OpenW3CLogWithExcel
                 .FirstOrDefault();
 
             // if not found, it's not W3C log file, then open the path with "Open" verb and exit.
-            if (marker.Text?.StartsWith("#Fields:") == false)
+            if ((marker.Text?.StartsWith("#Fields:") ?? false) == false)
             {
                 Shell.Open(path);
                 Exit?.Invoke(this, EventArgs.Empty);
