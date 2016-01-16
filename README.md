@@ -1,5 +1,7 @@
 ﻿# Open W3C extended format log file with Excel
 
+[![Build status](https://ci.appveyor.com/api/projects/status/byhj65outhvwfrdy?svg=true)](https://ci.appveyor.com/project/jsakamoto/openw3clogwithexcel)
+
 ## What's this? / これは何?
 
 This application is a converter from W3C extended format text log file to Microsoft Excel 2007 format(.xslx) file.
