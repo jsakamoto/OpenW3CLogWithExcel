@@ -110,7 +110,7 @@ namespace OpenW3CLogWithExcel
             File.SetAttributes(xlsxPath, FileAttributes.ReadOnly);
             Converted?.Invoke(this, EventArgs.Empty);
             var xlapp = Shell.Open(xlsxPath);
-            xlapp.WaitForExit();
+            xlapp?.WaitForExit();
 
             // Sweep .xlsx as temporary file.
             try
