@@ -62,5 +62,31 @@ namespace OpenW3CLogWithExcel.Test
             // Temporary .xlsx file was sweeped.
             File.Exists(xlsxPath).IsFalse();
         }
+        [Fact]
+        public void Open_W3CLogTextFile_ExcelProcess_is_Null_Test()
+        {
+            var xlsxPath = default(string);
+            var mockShell = new Mock<IShell>();
+            mockShell
+                .Setup(m => m.Open(It.Is<string>(v => v.EndsWith(".xlsx"))))
+                .Callback<string>(path =>
+                {
+                    xlsxPath = path;
+                    // .xlsx file exactly exists.
+                    File.Exists(xlsxPath).IsTrue();
+                    // .xlsx file is read only.
+                    File.GetAttributes(xlsxPath).HasFlag(FileAttributes.ReadOnly).IsTrue();
+                })
+                // ! Retun Null when already Excel instances are there.
+                .Returns(default(Process));
+
+            var opener = new W3CLogOpener(mockShell.Object);
+            var w3cLogFilePath = PathOf("w3c.log");
+            opener.Open(w3cLogFilePath);
+
+            mockShell.VerifyAll();
+            // Temporary .xlsx file was sweeped.
+            File.Exists(xlsxPath).IsFalse();
+        }
     }
 }
