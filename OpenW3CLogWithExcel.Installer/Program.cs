@@ -23,7 +23,7 @@ namespace OpenW3CLogWithExcel.Installer
             switch (args.FirstOrDefault())
             {
                 case "install":
-                    status = Install(args.LastOrDefault() ?? "1.0.0.0");
+                    status = Install();
                     break;
                 case "uninstall":
                     status = Uninstall();
@@ -42,28 +42,30 @@ namespace OpenW3CLogWithExcel.Installer
         /// <summary>
         /// Execute install prcoess.
         /// </summary>
-        private static ActionStatus Install(string appVer)
+        private static ActionStatus Install()
         {
+            var status = ActionStatus.NotUninstalled;
+
+            const string HKCR = "HKEY_CLASSES_ROOT";
+            var HKCR_txtfile_shell = $@"{HKCR}\txtfile\shell";
+            var HKCR_txtfile_shell_openW3clog = $@"{HKCR_txtfile_shell}\{verb}";
+            var HKCR_txtfile_shell_openW3clog_command = $@"{HKCR_txtfile_shell_openW3clog}\command";
+
             // Check installed or not
-            var regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\OpenW3CLogWithExcel");
-            var installedVer = regKey?.GetValue("ver", "").ToString();
-            if (installedVer == appVer) return ActionStatus.AlreayInstalled;
+            var cmdExpected = Registry.GetValue(@"HKEY_CLASSES_ROOT\0ea92b0253b34c489be1c97\shell\open\command", "", null) as string;
+            var cmdActual = Registry.GetValue(HKCR_txtfile_shell_openW3clog_command, "", null) as string;
+            if (cmdExpected == cmdActual) return ActionStatus.AlreayInstalled;
 
-            // Add "Open W3C log with Excel" verb by cloning command which ClickOnce created.
-            var HKCR = Registry.ClassesRoot;
-            var commandKey = HKCR.OpenSubKey(@"0ea92b0253b34c489be1c97\shell\open\command");
-            var commandValue = commandKey?.GetValue("")?.ToString();
-            if (commandValue != null)
+            if (!string.IsNullOrEmpty(cmdExpected))
             {
-                var shellKey = HKCR.CreateSubKey(verbPath);
-                shellKey.SetValue("", "Open W3C log with Excel");
-
-                var openLogCommanKey = shellKey.CreateSubKey("command");
-                openLogCommanKey.SetValue("", commandValue);
-
                 // Set "Open W3C log with Excel" to default verb.
-                HKCR.OpenSubKey(@"txtfile\shell", writable: true).SetValue("", verb);
+                Registry.SetValue(HKCR_txtfile_shell, "", verb);
+
+                // Add "Open W3C log with Excel" verb by cloning command which ClickOnce created.
+                Registry.SetValue(HKCR_txtfile_shell_openW3clog, "", "Open W3C log with Excel");
+                Registry.SetValue(HKCR_txtfile_shell_openW3clog_command, "", cmdExpected);
             }
+            else status |= ActionStatus.VerbCommandNotFound;
 
             // Override uninstall command, from ClickOnce original uninstaller to this custom uninstall process.
             var uninstallTheAppKey = FindUninstallTheAppRegKey(writable: true);
@@ -73,14 +75,11 @@ namespace OpenW3CLogWithExcel.Installer
                 uninstallTheAppKey?.SetValue("UninstallString.0", prevUninstallCommand);
                 uninstallTheAppKey?.SetValue("UninstallString", $"\"{Environment.GetCommandLineArgs().First()}\" uninstall");
             }
-
-            // Write installed version information to HKCU Registory.
-            Registry.CurrentUser.CreateSubKey(@"SOFTWARE\OpenW3CLogWithExcel")
-                .SetValue("ver", appVer);
-
-            var status = ActionStatus.NotUninstalled;
-            if (commandValue == null) status |= ActionStatus.VerbCommandNotFound;
             if (uninstallTheAppKey == null) status |= ActionStatus.CouldNotFoundUninstallKey;
+
+            // Sweep installed version information to HKCU Registory that old version wrote.
+            Registry.CurrentUser.DeleteSubKeyTreeAnyway(@"SOFTWARE\OpenW3CLogWithExcel");
+
             if (status == ActionStatus.NotUninstalled) status = ActionStatus.InstallSuccess;
             return status;
         }
@@ -122,22 +121,15 @@ namespace OpenW3CLogWithExcel.Installer
             }
 
             // Delete "Open W3C log with Excel" verb.
-            var txtShellKey = HKCR.OpenSubKey(@"txtfile\shell", writable: true);
-            if (txtShellKey.GetSubKeyNames().Contains(verb))
-            {
-                HKCR.DeleteSubKey(verbPath + @"\command");
-                HKCR.DeleteSubKey(verbPath);
-            }
+            HKCR.DeleteSubKeyTreeAnyway(verbPath);
 
             // Restore default verb of "txtfile".
+            var txtShellKey = HKCR.OpenSubKey(@"txtfile\shell", writable: true);
             var defaultVerb = txtShellKey.GetValue("").ToString();
             if (defaultVerb == verb)
             {
                 txtShellKey.SetValue("", "open");
             }
-
-            // Remove installed version information to HKCU Registory.
-            Registry.CurrentUser.DeleteSubKeyTree(@"SOFTWARE\OpenW3CLogWithExcel");
 
             return ActionStatus.UninstallSuccess;
         }

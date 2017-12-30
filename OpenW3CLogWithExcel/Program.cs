@@ -24,18 +24,7 @@ namespace OpenW3CLogWithExcel
             // Check install condition.
             if (ApplicationDeployment.IsNetworkDeployed)
             {
-                var thisVer = typeof(Program).Assembly.GetName().Version;
-                var thisVerStr = $"{thisVer.Major}.{thisVer.Minor}.{thisVer.Build}.{thisVer.Revision}";
-
-                var installedVer = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\OpenW3CLogWithExcel")?
-                    .GetValue("ver", "")
-                    .ToString();
-
-                if (installedVer != thisVerStr)
-                {
-                    var installerPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OpenW3CLogWithExcel.Installer.exe");
-                    Process.Start(installerPath, "install " + thisVerStr).WaitForExit();
-                }
+                InstallIfNecessary();
             }
 
             if (commandLineArgs.Any() == false) return;
@@ -44,6 +33,17 @@ namespace OpenW3CLogWithExcel
             if (File.Exists(path) == false) return;
 
             Application.Run(new MainForm(path));
+        }
+
+        private static void InstallIfNecessary()
+        {
+            var cmdExpected = Registry.GetValue(@"HKEY_CLASSES_ROOT\0ea92b0253b34c489be1c97\shell\open\command", "", null) as string;
+            var cmdActual = Registry.GetValue(@"HKEY_CLASSES_ROOT\txtfile\shell\openw3clogwithexcel\command", "", null) as string;
+            if (cmdExpected != cmdActual)
+            {
+                var installerPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OpenW3CLogWithExcel.Installer.exe");
+                Process.Start(installerPath, "install").WaitForExit();
+            }
         }
     }
 }
