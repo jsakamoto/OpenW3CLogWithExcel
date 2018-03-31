@@ -47,9 +47,41 @@ namespace OpenW3CLogWithExcel
             }
 
             // Generate .xlsx path as temporary file.
-            var xlsxPath = Path.Combine(Path.GetTempPath(), $"~{Guid.NewGuid():N}.xlsx");
+            var tmpDirPath = EnumGuidStrings()
+                .Select(guid => Path.Combine(Path.GetTempPath(), guid))
+                .First(dirPath => !Directory.Exists(dirPath) && !File.Exists(dirPath));
+            Directory.CreateDirectory(tmpDirPath);
+            var xlsxPath = Path.Combine(tmpDirPath, $"{Path.GetFileNameWithoutExtension(path)}.xlsx");
 
-            // Convert from W3C text log file to .xlsx file.
+            try
+            {
+                // Convert from W3C text log file to .xlsx file.
+                ConvertW3CLogToXlsx(lines, marker, xlsxPath);
+                Converted?.Invoke(this, EventArgs.Empty);
+
+                // Open with "Open" verb for .xlsx file.
+                Shell.Open(xlsxPath)?.WaitForExit();
+            }
+            finally
+            {
+                // Sweep .xlsx as temporary file.
+                try
+                {
+                    if (File.Exists(xlsxPath))
+                    {
+                        File.SetAttributes(xlsxPath, FileAttributes.Normal);
+                        File.Delete(xlsxPath);
+                    }
+                }
+                catch { }
+                try { if (Directory.Exists(tmpDirPath)) Directory.Delete(tmpDirPath); } catch { }
+            }
+
+            Exit?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ConvertW3CLogToXlsx(IEnumerable<Line> lines, Line marker, string xlsxPath)
+        {
             using (var xlbook = new XLWorkbook())
             using (var xlsheet = xlbook.AddWorksheet("Sheet1"))
             {
@@ -106,21 +138,7 @@ namespace OpenW3CLogWithExcel
                 xlbook.SaveAs(xlsxPath);
             }
 
-            // Open with "Open" verb for .xlsx file.
             File.SetAttributes(xlsxPath, FileAttributes.ReadOnly);
-            Converted?.Invoke(this, EventArgs.Empty);
-            var xlapp = Shell.Open(xlsxPath);
-            xlapp?.WaitForExit();
-
-            // Sweep .xlsx as temporary file.
-            try
-            {
-                File.SetAttributes(xlsxPath, FileAttributes.Normal);
-                File.Delete(xlsxPath);
-            }
-            catch (Exception) { }
-
-            Exit?.Invoke(this, EventArgs.Empty);
         }
 
         private struct Line
@@ -147,6 +165,11 @@ namespace OpenW3CLogWithExcel
                     yield return line;
                 }
             }
+        }
+
+        private static IEnumerable<string> EnumGuidStrings()
+        {
+            for (; ; ) yield return Guid.NewGuid().ToString("N");
         }
     }
 }
