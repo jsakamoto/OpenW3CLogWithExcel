@@ -23,13 +23,12 @@
     <ProductName>Open W3C Extended Log with Excel</ProductName>
     <PublisherName>J.Sakamoto</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>3</ApplicationRevision>
-    <ApplicationVersion>1.0.4.3</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.1.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
-
   <!-- ClickOnce publish configuration for Debug builld -->
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -37,7 +36,6 @@
     <UpdateEnabled>false</UpdateEnabled>
     <AutorunEnabled>true</AutorunEnabled>
   </PropertyGroup>
-
   <!-- ClickOnce publish configuration for Release builld -->
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <IsWebBootstrapper>true</IsWebBootstrapper>
@@ -45,7 +43,6 @@
     <UpdateEnabled>true</UpdateEnabled>
     <InstallUrl>https://clickonceget.azurewebsites.net/app/OpenW3CLogWithExcel/</InstallUrl>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
