@@ -11,18 +11,14 @@
     <AssemblyName>OpenW3CLogWithExcel</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Background</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://clickonceget.azurewebsites.net/app/OpenW3CLogWithExcel/</InstallUrl>
     <SupportUrl>https://github.com/jsakamoto/OpenW3CLogWithExcel</SupportUrl>
     <ProductName>Open W3C Extended Log with Excel</ProductName>
     <PublisherName>J.Sakamoto</PublisherName>
@@ -33,6 +29,23 @@
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
+
+  <!-- ClickOnce publish configuration for Debug builld -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <AutorunEnabled>true</AutorunEnabled>
+  </PropertyGroup>
+
+  <!-- ClickOnce publish configuration for Release builld -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <InstallUrl>https://clickonceget.azurewebsites.net/app/OpenW3CLogWithExcel/</InstallUrl>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
@@ -52,8 +65,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <ManifestTimestampUrl>http://timestamp.verisign.com/scripts/timstamp.dll</ManifestTimestampUrl>
   </PropertyGroup>
   <PropertyGroup>
